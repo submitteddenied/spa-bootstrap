@@ -6,13 +6,14 @@ tool and frameworks such as Angular.js and Backbone (you pick!)
 ##Directory Structure
 
     SPAT
-    ├── build
+    ├── target
     │   ├── dev
     │   │   ├── assets
     │   │   └── index.html
     │   └── dist
     │       ├── assets
     │       └── index.html
+    ├── build
     ├── Gruntfile.js
     ├── package.json
     ├── spec
@@ -32,6 +33,8 @@ tool and frameworks such as Angular.js and Backbone (you pick!)
 
 **spec/** Stores your JS specs (by default, Jasmine). This is the other half of your work
 
-**build/dev** The target directory for development build tasks, contains un-minified JS, CSS and images, as well as HTML that is compiled in "dev mode"
+**build/** A temporary working directory for build tasks, pay no attention to the files behind the curtain!
 
-**build/dist** The target directory for production build tasks. Everything is minified and compressed. You could (should?) deploy this folder to your webserver!
+**target/dev** The target directory for development build tasks, contains un-minified JS, CSS and images, as well as HTML that is compiled in "dev mode"
+
+**target/dist** The target directory for production build tasks. Everything is minified and compressed. You could (should?) deploy this folder to your webserver!
