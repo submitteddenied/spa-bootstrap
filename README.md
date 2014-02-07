@@ -18,11 +18,11 @@ tool and frameworks such as Angular.js and Backbone (you pick!)
     ├── spec
     └── src
         ├── css
-        ├── etc...
+        ├── js
         ├── fonts
         ├── html
         ├── images
-        └── js
+        └── etc...
 
 **package.json** Standard NPM package file. Similar to the Gemfile in Ruby projects.
 
