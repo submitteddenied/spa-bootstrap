@@ -35,33 +35,50 @@ module.exports = function(grunt) {
         },
         src: '<%= dirs.src %>/js/**/*.js',
         dest: '<%= dirs.build %>/js/<%= pkg.name %>.js'
+      }
+    },
+    uglify: {
+      options: {
+        
       },
       dist: {
-        src: '<%= dirs.src %>/js/**/*.js',
-        dest: '<%= dirs.build %>/js/<%= pkg.name %>.js'
+        files: [{
+          expand: true,
+          cwd: 'src/js',
+          src: '<%= dirs.build %>/js/<%= pkg.name %>.js',
+          dest: '<%= dirs.build %>/js/<%= pkg.name %>.min.js'
+      }]
       }
     },
     copy: {
       dev: {
-        src: '<%= dirs.build %>/**/*',
-        dest: '<%= dirs.target %>/dev/'
+        files: [{
+          expand: true, 
+          cwd: '<%= dirs.build %>/', 
+          src: ['**'], 
+          dest: '<%= dirs.target %>/dev/'
+        }]
       },
       dist: {
-        src: '<%= dirs.build %>/**/*',
-        dest: '<%= dirs.target %>/dist/'
+        files: [{
+          expand: true, 
+          cwd: '<%= dirs.build %>/', 
+          src: ['**'], 
+          dest: '<%= dirs.target %>/dist/'
+        }]
       }
     },
     clean: {
-      build: ['<%= dirs.build %>'],
-      dev: ['<%= dirs.target %>/dev/'],
-      dist: ['<%= dirs.target %>/dist/']
+      build: '<%= dirs.build %>',
+      dev: '<%= dirs.target %>/dev/',
+      dist: '<%= dirs.target %>/dist/'
     }
     
   });
   
   grunt.registerTask('spec', ['jasmine:spec']);
   grunt.registerTask('build:dev', ['concat:dev', 'copy:dev', 'clean:build']);
-  grunt.registerTask('build:dist', ['concat:dist', 'copy:dist', 'clean:build']);
+  grunt.registerTask('build:dist', ['concat:dev', 'uglify:dist', 'copy:dist', 'clean:build']);
   grunt.registerTask('build', ['build:dev']);
   grunt.registerTask('default', ['spec', 'build:dev']);
 };
