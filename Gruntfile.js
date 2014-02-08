@@ -9,6 +9,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-clean');
+  grunt.loadNpmTasks('grunt-contrib-less');
   
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
@@ -50,6 +51,24 @@ module.exports = function(grunt) {
       }]
       }
     },
+    less: {
+      options: {
+        paths: ["src/css"]
+      },
+      dev: {
+        files: {
+          "<%= dirs.build %>/css/<%= pkg.name %>.css": "<%= dirs.src %>/css/application.less"
+        }
+      },
+      dist: {
+        options: {
+          cleancss: true
+        },
+        files: {
+          "<%= dirs.build %>/css/<%= pkg.name %>.css": "<%= dirs.src %>/css/application.less"
+        }
+      }
+    },
     copy: {
       dev: {
         files: [{
@@ -73,12 +92,11 @@ module.exports = function(grunt) {
       dev: '<%= dirs.target %>/dev/',
       dist: '<%= dirs.target %>/dist/'
     }
-    
   });
   
   grunt.registerTask('spec', ['jasmine:spec']);
-  grunt.registerTask('build:dev', ['concat:dev', 'copy:dev', 'clean:build']);
-  grunt.registerTask('build:dist', ['concat:dev', 'uglify:dist', 'copy:dist', 'clean:build']);
+  grunt.registerTask('build:dev', ['concat:dev', 'less:dev', 'copy:dev', 'clean:build']);
+  grunt.registerTask('build:dist', ['concat:dev', 'uglify:dist', 'less:dist', 'copy:dist', 'clean:build']);
   grunt.registerTask('build', ['build:dev']);
   grunt.registerTask('default', ['spec', 'build:dev']);
 };
