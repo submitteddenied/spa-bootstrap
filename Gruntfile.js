@@ -8,6 +8,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-jasmine');
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-copy');
+  grunt.loadNpmTasks('grunt-contrib-clean');
   
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
@@ -33,18 +34,34 @@ module.exports = function(grunt) {
           process: addFilenameBanner
         },
         src: '<%= dirs.src %>/js/**/*.js',
-        dest: '<%= dirs.target %>/dev/js/<%= pkg.name %>.js'
+        dest: '<%= dirs.build %>/js/<%= pkg.name %>.js'
       },
       dist: {
         src: '<%= dirs.src %>/js/**/*.js',
-        dest: '<%= dirs.target %>/dist/js/<%= pkg.name %>.js'
+        dest: '<%= dirs.build %>/js/<%= pkg.name %>.js'
       }
     },
     copy: {
-      
+      dev: {
+        src: '<%= dirs.build %>/**/*',
+        dest: '<%= dirs.target %>/dev/'
+      },
+      dist: {
+        src: '<%= dirs.build %>/**/*',
+        dest: '<%= dirs.target %>/dist/'
+      }
+    },
+    clean: {
+      build: ['<%= dirs.build %>'],
+      dev: ['<%= dirs.target %>/dev/'],
+      dist: ['<%= dirs.target %>/dist/']
     }
+    
   });
   
   grunt.registerTask('spec', ['jasmine:spec']);
-  grunt.registerTask('default', ['spec']);
+  grunt.registerTask('build:dev', ['concat:dev', 'copy:dev', 'clean:build']);
+  grunt.registerTask('build:dist', ['concat:dist', 'copy:dist', 'clean:build']);
+  grunt.registerTask('build', ['build:dev']);
+  grunt.registerTask('default', ['spec', 'build:dev']);
 };
