@@ -10,6 +10,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-contrib-less');
+  grunt.loadNpmTasks('grunt-contrib-jade');
   
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
@@ -69,6 +70,36 @@ module.exports = function(grunt) {
         }
       }
     },
+    jade: {
+      dev: {
+        options: {
+          data: {
+            "environment": "developement"
+          }
+        },
+        files: [{
+          expand: true,
+          cwd: '<%= dirs.src %>',
+          src: ['*.jade'],
+          dest: 'build/',
+          ext: '.html'
+        }]
+      },
+      dist: {
+        options: {
+          data: {
+            "environment": "production"
+          }
+        },
+        files: [{
+          expand: true,
+          cwd: '<%= dirs.src %>',
+          src: ['*.jade'],
+          dest: 'build/',
+          ext: '.html'
+        }]
+      }
+    },
     copy: {
       dev: {
         files: [{
@@ -95,8 +126,8 @@ module.exports = function(grunt) {
   });
   
   grunt.registerTask('spec', ['jasmine:spec']);
-  grunt.registerTask('build:dev', ['concat:dev', 'less:dev', 'copy:dev', 'clean:build']);
-  grunt.registerTask('build:dist', ['concat:dev', 'uglify:dist', 'less:dist', 'copy:dist', 'clean:build']);
+  grunt.registerTask('build:dev', ['jade:dev', 'concat:dev', 'less:dev', 'copy:dev' ]);// , 'clean:build']);
+  grunt.registerTask('build:dist', ['jade:dist', 'concat:dev', 'uglify:dist', 'less:dist', 'copy:dist', 'clean:build']);
   grunt.registerTask('build', ['build:dev']);
   grunt.registerTask('default', ['spec', 'build:dev']);
 };
